@@ -1,0 +1,28 @@
+.home {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    height: 500px;
+    align-items: center; /* İçeriği dikeyde ortala */
+    justify-content: center; /* İçeriği yatayda ortala */
+    margin-left: 100px;
+    margin-right: 100px;
+    flex-grow: 1;
+    
+    background-color: rgb(158, 191, 251);
+}
+
+
+
+.kenar {
+    color: aliceblue;
+    background-color: aliceblue;
+    max-width: 100px;
+}
+
+.homePage {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
