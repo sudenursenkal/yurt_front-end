@@ -144,8 +144,6 @@ function CreateStudent(props) {
         SetAddressDescription(value);
     }
 
-    const { isActive } = props;
-
     const addressCreateRequest = { // burada id de create etmiş oluyorum :)
         street,
         city,
@@ -164,7 +162,7 @@ function CreateStudent(props) {
     return (
 
         <div>
-            <Card sx={{ maxWidth: 345, margin: '20px 0', mx: 'auto' }} >
+            <Card sx={{ maxWidth: 345, margin: '20px 0', mx: 'auto', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }} >
                 <Box
                     component="form"
                     sx={{
@@ -182,6 +180,7 @@ function CreateStudent(props) {
                             inputProps={{ maxLength: 25 }}
                             fullWidth
                             onChange={(i) => handleName(i.target.value)}
+                            error={!name && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
@@ -193,17 +192,19 @@ function CreateStudent(props) {
                             inputProps={{ maxLength: 25 }}
                             fullWidth
                             onChange={(i) => handleSurname(i.target.value)}
+                            error={!surname && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
 
                     <FormControl fullWidth sx={{ m: 1 }}>
-                        <InputLabel >Identity Number</InputLabel>
+                        <InputLabel>Identity Number</InputLabel>
                         <OutlinedInput
                             label="identityNumber"
                             inputProps={{ maxLength: 11 }}
                             fullWidth
                             onChange={(i) => handleIdentityNumber(i.target.value)}
+                            error={identityNumber.length !== 11 && error !== ""} 
                         ></OutlinedInput>
                     </FormControl>
 
@@ -215,6 +216,7 @@ function CreateStudent(props) {
                             inputProps={{ maxLength: 11 }}
                             fullWidth
                             onChange={(i) => handlePhoneNumber(i.target.value)}
+                            error={!phoneNumber && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
@@ -226,6 +228,7 @@ function CreateStudent(props) {
                             inputProps={{ maxLength: 11 }}
                             multiline
                             onChange={(i) => handleFamilyNumber(i.target.value)}
+                            error={!familyNumber && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
@@ -237,6 +240,7 @@ function CreateStudent(props) {
                             inputProps={{ maxLength: 25 }}
                             fullWidth
                             onChange={(i) => handleCountry(i.target.value)}
+                            error={!country && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
@@ -248,6 +252,7 @@ function CreateStudent(props) {
                             inputProps={{ maxLength: 25 }}
                             fullWidth
                             onChange={(i) => handleCity(i.target.value)}
+                            error={!city && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
@@ -259,6 +264,7 @@ function CreateStudent(props) {
                             inputProps={{ maxLength: 25 }}
                             fullWidth
                             onChange={(i) => handleStreet(i.target.value)}
+                            error={!street && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
@@ -273,6 +279,7 @@ function CreateStudent(props) {
                             rows={2}
                             fullWidth
                             onChange={(i) => handleAddressDescription(i.target.value)}
+                            error={!addressDescription && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
@@ -284,6 +291,7 @@ function CreateStudent(props) {
                             inputProps={{ maxLength: 25 }}
                             fullWidth
                             onChange={(i) => handleSchoolName(i.target.value)}
+                            error={!schoolName && error !== ""} // Hata durumunda ve alan boşsa error olarak işaretlenir
                         ></OutlinedInput>
                     </FormControl>
 
@@ -293,7 +301,7 @@ function CreateStudent(props) {
                     </Button>
                 </Box>
             </Card>
-            
+
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} >
                 <Alert onClose={handleClose} variant="filled" severity={error ? "error" : "success"} sx={{ width: '100%' }}>
                     {error || "Student Updated"}

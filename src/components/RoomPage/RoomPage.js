@@ -1,18 +1,46 @@
 import React, { useState, useEffect } from "react";
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import NavBar from "../NavBar/NavBar";
 
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.primary.light, // Açık mavi rengi
+      color: theme.palette.primary.contrastText, // Başlık hücrelerinin metin rengi
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14, // Hücrelerin metin boyutu
+    },
+  }));
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      
+      '&:hover': {
+        backgroundColor: '#e1bee7', // Tek sıradaki arka plan rengi hafifçe koyulaşsın
+      },
+    },
+    '&:nth-of-type(even)': {
+      backgroundColor: '#e3f2fd', // Çift sıradaki arka plan rengi (normal mavi)
+      '&:hover': {
+        backgroundColor: '#f3e5f5', // Çift sıradaki arka plan rengi hafifçe koyulaşsın
+      },
+    },
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
+  
+  
 function RoomPage() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -29,7 +57,6 @@ function RoomPage() {
             })
             .then((result) => {
                 setIsLoaded(true);
-                console.log("Room Data:", result);
                 setRoomData(result);
             })
             .catch((error) => {
@@ -48,33 +75,33 @@ function RoomPage() {
 
     return (
         <div>
-            Room
-            <div style={{ marginLeft: '120px', marginRight: '120px', marginTop: '40px', display: 'flex', justifyContent: 'center' }}>
+            <h3>Room</h3>
+            <div style={{ marginLeft: '120px', marginRight: '120px', marginTop: '40px', display: 'flex', justifyContent: 'center', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table sx={{ minWidth: 650 }} aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Dormitory Name</TableCell>
-                                <TableCell align="right">Room Number</TableCell>
-                                <TableCell align="right">Room Type</TableCell>
-                                <TableCell align="right">Instant Room Capacity</TableCell>
-                                <TableCell align="right">Price</TableCell>
+                                <StyledTableCell>Dormitory Name</StyledTableCell>
+                                <StyledTableCell align="right">Room Number</StyledTableCell>
+                                <StyledTableCell align="right">Room Type</StyledTableCell>
+                                <StyledTableCell align="right">Instant Room Capacity</StyledTableCell>
+                                <StyledTableCell align="right">Price</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {roomData.map((roomInfo) => (
-                                <TableRow
+                                <StyledTableRow
                                     key={roomInfo.room.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell component="th" scope="row">
+                                    <StyledTableCell component="th" scope="row">
                                         {roomInfo.name}
-                                    </TableCell>
-                                    <TableCell align="right">{roomInfo.room.roomNumber}</TableCell>
-                                    <TableCell align="right">{roomInfo.roomType}</TableCell>
-                                    <TableCell align="right">{roomInfo.instantRoomCapacity}</TableCell>
-                                    <TableCell align="right">{roomInfo.price}</TableCell>
-                                </TableRow>
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">{roomInfo.room.roomNumber}</StyledTableCell>
+                                    <StyledTableCell align="right">{roomInfo.roomType}</StyledTableCell>
+                                    <StyledTableCell align="right">{roomInfo.instantRoomCapacity}</StyledTableCell>
+                                    <StyledTableCell align="right">{roomInfo.price}</StyledTableCell>
+                                </StyledTableRow>
 
                             ))}
 

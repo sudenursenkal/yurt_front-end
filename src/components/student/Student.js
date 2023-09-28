@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,7 +8,6 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { deepPurple } from '@mui/material/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -21,6 +20,7 @@ import EditStudent from "./EditStudent";
 import { useHistory } from 'react-router-dom'; // useHistory hook'unu içe aktar
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+
 
 const style = {
     position: 'absolute',
@@ -44,10 +44,31 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-
+function getRandomColor() {
+    // Rasgele bir renk üretmek için kullanılabilir kullaniciların avatari icin
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 function Student(props) {
-    const { id, name, surname, phoneNumber, familyNumber, schoolName, street, city, country, addressType, addressDescription, studentIds } = props;
+    const { id, name, surname, phoneNumber, familyNumber, schoolName, street, city, country, addressType, addressDescription, studentIds, isValid } = props;
+
+
+    // id'leri bir liste olarak tutmak için useState kullanımı
+    const [idList, setIdList] = useState([]);
+
+    // Student bileşeni yüklendiğinde, idList'e yeni id'yi eklemek için useEffect kullanabilirsiniz.
+    useEffect(() => {
+        if (studentIds) {
+            // Veritabanından gelen öğrenci ID'lerini idList dizisine ekleyin
+            setIdList(studentIds);
+        }
+    }, [studentIds]);
+
 
     const [expanded, setExpanded] = useState(false); // expanded ile açik kapali takibi
     const handleExpandClick = () => {
@@ -91,7 +112,11 @@ function Student(props) {
             setErrorMessage("Student ID should be a number.");
             setIsError(true);
 
-        } /*else if (!studentIds.includes(studentId)) {
+        } else if (!idList.includes(parseInt(studentId))) {
+            setErrorMessage("Student ID is not found.");
+            setIsError(true);
+
+        }/*else if (!studentIds.includes(studentId)) {
             alert("Öyle bir öğrenci bulunamadı.");
         }*/ else {
             history.push(`student/update/${studentId}`);
@@ -141,32 +166,32 @@ function Student(props) {
 
     const handleInfo = () => {
         if (!expanded) {
-            console.log("bisi yaz artik")
-            console.log("phoneNumber:", phoneNumber);
-            console.log("schoolName:", schoolName);
-            console.log("addressDescription:", addressDescription);
-
-
+            console.log("actik")
         } else {
-            console.log("dükkani kapadik")
+            console.log("kapadik")
 
         }
 
     };
 
-
-
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const [localIsValid, setLocalIsValid] = useState(props.isValid);
+
+    const handleDeleteClick = () => {
+        setLocalIsValid(false); // localIsValid değerini false olarak ayarla
+    };
+
     return (
         <div>
+            
             <div>
-                <Card sx={{ maxWidth: 400, margin: '20px 0', mx: 'auto' }} >
+                <Card sx={{ maxWidth: 400, margin: '20px 0', mx: 'auto', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }} >
                     <CardHeader
                         avatar={
-                            <Avatar sx={{ bgcolor: deepPurple[500] }} >
+                            <Avatar sx={{ bgcolor: getRandomColor(), width: 45, height: 45, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.4)' }} >
                                 {name.charAt(0).toUpperCase() + surname.charAt(0).toUpperCase()} {/*kullanici isim ilk karakter*/}
                             </Avatar>
                         }
@@ -175,40 +200,36 @@ function Student(props) {
 
                     />
 
-                    <CardActions disableSpacing>
-                        <Fab size="small" color="secondary" aria-label="edit" onClick={() => handleEditIconClick(id)}>
-                            <EditIcon />
-                        </Fab>
-                        <Modal
-                            open={editOpen}
-                            onClose={handleEditClose}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                        >
-                            <Box sx={style}>
-                                <div style={{ maxWidth: "90%", maxHeight: "90vh", overflowY: "auto" }}>
-                                    <EditStudent id={id} />
-                                </div>
-                            </Box>
-                        </Modal>
-                        
-                        <ExpandMore
-                            expand={expanded}
-                            onClick={handleExpandClick}
-                            aria-expanded={expanded}
-                            aria-label="show more"
-                        >
-                            <Fab size="small" color="info" >
-                                <ExpandMoreIcon onClick={handleInfo} />
+                    <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between', margin : 1}}>
+                        <div>
+                            <Fab size="small" color="secondary" aria-label="edit" onClick={() => handleEditIconClick(id)}>
+                                <EditIcon />
                             </Fab>
-                        </ExpandMore>
-                        <ExpandMore
-                        >
-                            <Fab size="small" color="error" aria-label="edit">
-                                <DeleteIcon /></Fab>
-
-                        </ExpandMore>
+                            <Modal
+                                open={editOpen}
+                                onClose={handleEditClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={style}>
+                                    <div style={{ maxWidth: "90%", maxHeight: "90vh", overflowY: "auto" }}>
+                                        <EditStudent id={id} />
+                                    </div>
+                                </Box>
+                            </Modal>
+                        </div>
+                        <div>
+                            <Fab size="small" color="info" onClick={handleExpandClick}>
+                                <ExpandMoreIcon />
+                            </Fab>
+                        </div>
+                        <div>
+                            <Fab size="small" color="error" aria-label="edit" onClick={handleDeleteClick}>
+                                <DeleteIcon />
+                            </Fab>
+                        </div>
                     </CardActions>
+
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <Typography paragraph>Information: </Typography>
                         <CardContent>
@@ -227,6 +248,7 @@ function Student(props) {
 
                 </Card>
             </div>
+        
             <div >
                 <Button size="large" variant="contained" color="success" aria-label="add"
                     sx={{ position: 'fixed', bottom: 50, right: 50, zIndex: 'tooltip' }}
@@ -246,9 +268,10 @@ function Student(props) {
                 </Modal>
 
             </div>
+            
             <div>
                 {/* "Update A Student" butonu */}
-                <Button size="large" variant="contained" color="success" aria-label="add"
+                <Button size="large" variant="contained" color="secondary" aria-label="add"
                     sx={{ position: 'fixed', bottom: 110, right: 50, zIndex: 'tooltip' }}
                     onClick={handleIdInputOpen}>Update A Student</Button>
 
@@ -286,13 +309,11 @@ function Student(props) {
                     </Box>
                 </Modal>
 
-                <Snackbar open={isError} autoHideDuration={6000} onClose={() =>{ setIsError(false); setErrorMessage("");}} >
-                    <Alert onClose={() =>{ setIsError(false); setErrorMessage("");}} severity="error" variant="filled" sx={{ width: '100%' }}>
+                <Snackbar open={isError} autoHideDuration={6000} onClose={() => { setIsError(false); setErrorMessage(""); }} >
+                    <Alert onClose={() => { setIsError(false); setErrorMessage(""); }} severity="error" variant="filled" sx={{ width: '100%' }}>
                         {errorMessage}
                     </Alert>
                 </Snackbar>
-
-
             </div>
         </div>
     )

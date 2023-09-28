@@ -6,8 +6,13 @@ function Home() {
         <div>
             <div className="homePage">
                 <div className="kenar"></div>
-                <div className="home" >
-                    1 ayı aşan çalışmalar sonucunda işte karşınızda yurt projemiz. İyi seyilerler dileriz :)
+                <div >
+                    <h3 style={{margin:'100px'}}>
+                        1 ayı aşan çalışmalar sonucunda işte karşınızda yurt projemiz.
+                    </h3>
+                    <h5>
+                        Not: Bu benim ilk projem. Bu süreçte bana destek olan staj yaptığım Fups ekibine ve stajyer arkadaşlarıma teşekkür ederim.
+                    </h5>
                 </div>
                 <div className="kenar"> </div>
             </div>

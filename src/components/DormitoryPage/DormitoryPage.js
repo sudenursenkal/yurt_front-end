@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -31,6 +30,7 @@ function DormitoryPage() {
   const [expanded, setExpanded] = useState({}); // Her kart için ayrı bir expanded durumu
 
   useEffect(() => {
+{/* Dormitory-info dto'su olsunca address bilgileri vs da eklenebilir*/}
     fetch("/dormitory")
       .then((res) => {
         if (!res.ok) {
@@ -40,7 +40,6 @@ function DormitoryPage() {
       })
       .then((result) => {
         setIsLoaded(true);
-        console.log("Dormitory Data:", result);
         setDormitoryData(result);
         // Tüm kartlar için başlangıçta kapalı olarak ayarlayın
         const initialExpanded = {};
@@ -54,6 +53,7 @@ function DormitoryPage() {
         setError(error);
       });
   }, []);
+
 
   if (!isLoaded) {
     return (
@@ -80,11 +80,11 @@ function DormitoryPage() {
 
   return (
     <div>
-      Dormitory
+      <h3> Dormitory </h3>
       {dormitoryData.map((dormitory) => (
         <Card
           key={dormitory.id}
-          sx={{ maxWidth: 400, margin: "20px 0", mx: "auto" }}
+          sx={{ maxWidth: 400, margin: "20px 0", mx: "auto", boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}
         >
           <CardHeader
             title={
@@ -94,30 +94,25 @@ function DormitoryPage() {
             }
           />
 
-          <CardActions disableSpacing>
-            <ExpandMore
-              expand={expanded[dormitory.id]} // Kartın durumunu kullanın
-              onClick={() => handleExpandClick(dormitory.id)} // Doğru kartı açmak için id'yi kullanın
-              aria-expanded={expanded[dormitory.id]}
-              aria-label="show more"
-            >
-              <Fab size="small" color="info">
-                <ExpandMoreIcon onClick={handleInfo} />
-              </Fab>
-            </ExpandMore>
+          <CardActions disableSpacing style={{ display: 'grid', placeItems: 'center' }}>
+            <Fab size="small" color="info" onClick={() => handleExpandClick(dormitory.id)}>
+              <ExpandMoreIcon />
+            </Fab>
           </CardActions>
+
+
 
           <Collapse in={expanded[dormitory.id]} timeout="auto" unmountOnExit>
             <CardContent>
               <Typography paragraph>Info:</Typography>
               <div variant="body2" color="text.secondary">
-                {`${dormitory.name}'s info: ${dormitory.address_id}`}
+                {`${dormitory.name}'s address id: ${dormitory.address_id}`}
               </div>
             </CardContent>
           </Collapse>
         </Card>
       ))}
-       {/*<Modal
+      {/*<Modal
                     open={editOpen}
                     onClose={handleEditClose}
                     aria-labelledby="modal-modal-title"

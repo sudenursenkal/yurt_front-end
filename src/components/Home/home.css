@@ -1,14 +1,4 @@
-.home {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    height: 500px;
-    align-items: center; /* İçeriği dikeyde ortala */
-    justify-content: center; /* İçeriği yatayda ortala */
-    margin-left: 100px;
-    margin-right: 100px;
-    flex-grow: 1;
-}
+
 
 .kenar {
     color: aliceblue;

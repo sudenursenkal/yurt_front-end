@@ -144,7 +144,6 @@ function EditStudent() {
                 return response.json();
             })
             .then((data) => {
-                console.log('Student successfully updated:', data);
                 setOpen(true);
                 setError("");
             })
@@ -167,9 +166,6 @@ function EditStudent() {
     const closeAddressEdit = () => {
         setAddressEditOpen(false);
     };
-
-    console.log(studentData);
-    console.log(id);
 
 
     return (

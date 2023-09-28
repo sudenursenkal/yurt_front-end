@@ -1,4 +1,5 @@
 {/* Hneuz degistirmedim
+Tek yurt icin yapmayı planladıgı icin backend bazi eksikler var coklu kullanim icin
 import React, { useState } from "react";
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
