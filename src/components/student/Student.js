@@ -44,7 +44,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-function getRandomColor() {
+{/*function getRandomColor() { // bu kodu iptal ettim 
     // Rasgele bir renk üretmek için kullanılabilir kullaniciların avatari icin
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -53,7 +53,7 @@ function getRandomColor() {
     }
     return color;
 }
-
+*/}
 function Student(props) {
     const { id, name, surname, phoneNumber, familyNumber, schoolName, street, city, country, addressType, addressDescription, studentIds, isValid } = props;
 
@@ -191,7 +191,7 @@ function Student(props) {
                 <Card sx={{ maxWidth: 400, margin: '20px 0', mx: 'auto', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }} >
                     <CardHeader
                         avatar={
-                            <Avatar sx={{ bgcolor: getRandomColor(), width: 45, height: 45, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.4)' }} >
+                            <Avatar sx={{ background: 'linear-gradient(45deg, rgba(20,56,162,1) 18%, rgba(29,188,253,1) 69%, rgba(101,250,246,1) 87%)', width: 45, height: 45, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.4)' }} onClick={handleExpandClick}>
                                 {name.charAt(0).toUpperCase() + surname.charAt(0).toUpperCase()} {/*kullanici isim ilk karakter*/}
                             </Avatar>
                         }
@@ -202,7 +202,7 @@ function Student(props) {
 
                     <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between', margin : 1}}>
                         <div>
-                            <Fab size="small" color="secondary" aria-label="edit" onClick={() => handleEditIconClick(id)}>
+                            <Fab size="small" color="secondary" aria-label="edit" sx={{background:'linear-gradient(45deg, rgba(105,20,162,1) 18%, rgba(213,29,253,1) 69%, rgba(250,101,247,1) 87%)'}} onClick={() => handleEditIconClick(id)}>
                                 <EditIcon />
                             </Fab>
                             <Modal
@@ -212,19 +212,21 @@ function Student(props) {
                                 aria-describedby="modal-modal-description"
                             >
                                 <Box sx={style}>
-                                    <div style={{ maxWidth: "90%", maxHeight: "90vh", overflowY: "auto" }}>
+                                    <div sx={{ maxWidth: "90%", maxHeight: "90vh", overflowY: "auto"}}>
                                         <EditStudent id={id} />
                                     </div>
                                 </Box>
                             </Modal>
                         </div>
                         <div>
-                            <Fab size="small" color="info" onClick={handleExpandClick}>
+                            <Fab size="small" sx={{background: 'linear-gradient(45deg, rgba(20,56,162,1) 18%, rgba(29,188,253,1) 69%, rgba(101,250,246,1) 87%)', color: 'white'}} onClick={handleExpandClick}>
                                 <ExpandMoreIcon />
                             </Fab>
                         </div>
                         <div>
-                            <Fab size="small" color="error" aria-label="edit" onClick={handleDeleteClick}>
+                            <Fab size="small" color="error" aria-label="edit" 
+                            sx={{background: 'linear-gradient(45deg, rgba(152,0,46,1) 18%, rgba(253,29,29,1) 69%, rgba(249,101,138,1) 87%)'}}
+                            onClick={handleDeleteClick}>
                                 <DeleteIcon />
                             </Fab>
                         </div>
@@ -236,7 +238,7 @@ function Student(props) {
                             <div>Phone Number : {phoneNumber} </div>
                             <div>Family Number : {familyNumber} </div>
                             <div>School Name : {schoolName} </div>
-                            <div>Address Info:
+                            <div>Address Info
                                 <div>Street: {street}</div>
                                 <div>City: {city}</div>
                                 <div>Country: {country}</div>
@@ -251,7 +253,8 @@ function Student(props) {
         
             <div >
                 <Button size="large" variant="contained" color="success" aria-label="add"
-                    sx={{ position: 'fixed', bottom: 50, right: 50, zIndex: 'tooltip' }}
+                    sx={{ position: 'fixed', bottom: 50, right: 50, zIndex: 'tooltip',
+                    background: 'linear-gradient(45deg, rgba(0,152,17,1) 18%, rgba(34,200,22,1) 69%, rgba(85,250,101,1) 87%)' }}
                     onClick={handleOpen}>Create A Student</Button>
                 <Modal
                     open={open}
@@ -272,7 +275,8 @@ function Student(props) {
             <div>
                 {/* "Update A Student" butonu */}
                 <Button size="large" variant="contained" color="secondary" aria-label="add"
-                    sx={{ position: 'fixed', bottom: 110, right: 50, zIndex: 'tooltip' }}
+                    sx={{ position: 'fixed', bottom: 110, right: 50, zIndex: 'tooltip',
+                    background:'linear-gradient(45deg, rgba(105,20,162,1) 18%, rgba(213,29,253,1) 69%, rgba(250,101,247,1) 87%)'}}
                     onClick={handleIdInputOpen}>Update A Student</Button>
 
                 {/* EditStudent bileşeni modalı */}

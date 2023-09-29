@@ -7,10 +7,18 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
 import { blueGrey } from "@mui/material/colors";
-import SpeedDial from "@mui/material/SpeedDial";
+import {SpeedDial, SpeedDialIcon} from "@mui/material";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 
+const gradientOptions = {
+  blue: "linear-gradient(45deg, rgba(20,56,162,1) 18%, rgba(29,188,253,1) 69%, rgba(101,250,246,1) 87%)",
+  red: "linear-gradient(45deg, rgba(255,0,0,1) 18%, rgba(255,34,34,1) 69%, rgba(255,85,85,1) 87%)",
+  green: "linear-gradient(45deg, rgba(0,152,17,1) 18%, rgba(34,200,22,1) 69%, rgba(85,250,101,1) 87%)",
+  purple: "linear-gradient(45deg, rgba(128,0,128,1) 18%, rgba(159,61,255,1) 69%, rgba(186,85,211,1) 87%)",
+  orange: "linear-gradient(45deg, rgba(255,140,0,1) 18%, rgba(255,165,34,1) 69%, rgba(255,204,85,1) 87%)",
+  pink: "linear-gradient(45deg, rgba(255,192,203,1) 18%, rgba(255,105,180,1) 69%, rgba(238,130,238,1) 87%)",
+};
 const colorOptions = [
   { label: "Blue", value: "blue" },
   { label: "Red", value: "red" },
@@ -28,27 +36,22 @@ function NavBar() {
     setSelectedColor(color);
   };
 
-  const togglePalette = () => {
-    setPaletteOpen((prevOpen) => !prevOpen);
-  };
-
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ backgroundColor: selectedColor }}>
+      <AppBar position="static" style={{ background: gradientOptions[selectedColor] }}>
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             aria-label="home"
-            sx={{ mr: 2, color: blueGrey[50] }}
+            sx={{ mr: 2, color: 'white' }}
           >
             <Link to="/">
-              <HomeIcon fontSize="large" sx={{ color: blueGrey[50] }} />
+              <HomeIcon fontSize="large" sx={{ color: 'white' }} />
             </Link>
           </IconButton>
-
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <NavLink
+          <NavLink
               to="/dormitory"
               style={navLinkStyles}
               activeStyle={activeNavLinkStyles}
@@ -89,33 +92,56 @@ function NavBar() {
             </NavLink>
           </Typography>
 
-          <SpeedDial
-            ariaLabel="ColorPicker SpeedDial"
-            sx={{ position: "absolute", top:"6%" , right: 30,}}
-            icon={<ColorLensIcon  />}
-            direction="down"
-            open={paletteOpen}
-            onOpen={togglePalette}
-            onClose={togglePalette}
+          <div
+            onMouseEnter={() => setPaletteOpen(true)}
+            onMouseLeave={() => setPaletteOpen(false)}
+            style={{
+              position: "relative",
+              backgroundColor: gradientOptions[selectedColor],
+              width: "56px",
+              height: "56px",
+              borderRadius: "50%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            {colorOptions.map((color) => (
-              <SpeedDialAction
-                key={color.value}
-                icon={
-                  <div
-                    style={{
-                      backgroundColor: color.value,
-                      width: "24px",
-                      height: "24px",
-                      borderRadius: "50%",
-                    }}
-                  />
-                }
-                tooltipTitle={color.label}
-                onClick={() => handleColorChange(color.value)}
-              />
-            ))}
-          </SpeedDial>
+            
+            <SpeedDial
+              ariaLabel="SpeedDial Example"
+              sx={{
+                position: "absolute",
+                top: "6%",
+                right: 30,
+                backgroundColor: gradientOptions[selectedColor],
+              }}
+              icon={<SpeedDialIcon icon={<ColorLensIcon
+                style={{ color: "white", cursor: "pointer",backgroundColor: gradientOptions[selectedColor] }}
+              />}/>}
+              direction="down"
+              open={paletteOpen}
+              onOpen={() => setPaletteOpen(true)}
+              onClose={() => setPaletteOpen(false)}
+            >
+              {colorOptions.map((color) => (
+                <SpeedDialAction
+                  key={color.value}
+                  icon={
+                    <div
+                      style={{
+                        backgroundColor: color.value,
+                        width: "24px",
+                        height: "24px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  }
+                  tooltipTitle={color.label}
+                  onClick={() => handleColorChange(color.value)}
+                />
+              ))}
+            </SpeedDial>
+          </div>
         </Toolbar>
       </AppBar>
     </Box>

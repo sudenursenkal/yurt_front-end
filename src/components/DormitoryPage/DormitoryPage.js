@@ -16,21 +16,16 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: expand ? 'rotate(180deg)' : 'rotate(0deg)', // Açıldığında dönsün
   marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
 }));
 
 function DormitoryPage() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [dormitoryData, setDormitoryData] = useState([]);
-  const [expanded, setExpanded] = useState({}); // Her kart için ayrı bir expanded durumu
+  const [expanded, setExpanded] = useState({});
 
   useEffect(() => {
-{/* Dormitory-info dto'su olsunca address bilgileri vs da eklenebilir*/}
     fetch("/dormitory")
       .then((res) => {
         if (!res.ok) {
@@ -41,7 +36,6 @@ function DormitoryPage() {
       .then((result) => {
         setIsLoaded(true);
         setDormitoryData(result);
-        // Tüm kartlar için başlangıçta kapalı olarak ayarlayın
         const initialExpanded = {};
         result.forEach((dormitory) => {
           initialExpanded[dormitory.id] = false;
@@ -54,7 +48,6 @@ function DormitoryPage() {
       });
   }, []);
 
-
   if (!isLoaded) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
@@ -66,16 +59,8 @@ function DormitoryPage() {
   const handleExpandClick = (id) => {
     setExpanded((prevExpanded) => ({
       ...prevExpanded,
-      [id]: !prevExpanded[id], // Kartın durumunu tersine çevirin
+      [id]: !prevExpanded[id],
     }));
-  };
-
-  const handleInfo = () => {
-    if (!expanded) {
-      console.log("bisi yaz artik");
-    } else {
-      console.log("dükkani kapadik");
-    }
   };
 
   return (
@@ -95,12 +80,10 @@ function DormitoryPage() {
           />
 
           <CardActions disableSpacing style={{ display: 'grid', placeItems: 'center' }}>
-            <Fab size="small" color="info" onClick={() => handleExpandClick(dormitory.id)}>
+            <Fab size="small" sx={{background: 'linear-gradient(45deg, rgba(20,56,162,1) 18%, rgba(29,188,253,1) 69%, rgba(101,250,246,1) 87%)', color: 'white'}} onClick={() => handleExpandClick(dormitory.id)}>
               <ExpandMoreIcon />
             </Fab>
           </CardActions>
-
-
 
           <Collapse in={expanded[dormitory.id]} timeout="auto" unmountOnExit>
             <CardContent>
@@ -108,23 +91,11 @@ function DormitoryPage() {
               <div variant="body2" color="text.secondary">
                 {`${dormitory.name}'s address id: ${dormitory.address_id}`}
               </div>
+              <div>{`Dormitory capacity: ${dormitory.general_capacity}`}</div>
             </CardContent>
           </Collapse>
         </Card>
       ))}
-      {/*<Modal
-                    open={editOpen}
-                    onClose={handleEditClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={style}>
-                        <div style={{ maxWidth: "90%", maxHeight: "90vh", overflowY: "auto" }}>
-                            {/* EditStudent bileşenine öğrenci ID'sini geçiriyoruz }
-                            <EditDormitory id={id} />
-                        </div>
-                    </Box>
-                </Modal>*/}
     </div>
   );
 }
